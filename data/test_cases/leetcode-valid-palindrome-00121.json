@@ -1,0 +1,29 @@
+{
+  "problem_id": "leetcode-valid-palindrome-00121",
+  "entry_point": "Solution().isPalindrome",
+  "prompt": "import collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "s": "race a car"
+      },
+      "expected_output": null
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": " "
+      },
+      "expected_output": null
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "Able was I ere I saw Elba"
+      },
+      "expected_output": true
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}

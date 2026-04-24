@@ -135,24 +135,17 @@ This project aims to improve code generation reliability by:
 
 ## Sources and Retrieval Strategy
 
-### Primary Sources
+### Primary Source
 
-**1. LeetCode (via neetcode.io or leetcode-dataset on HuggingFace)**
+**LeetCode (HuggingFace: `newfacade/LeetCodeDataset`)**
 
-* HuggingFace dataset: `mhhmm/leetcode-solutions-python` — contains problem descriptions + Python solutions
-* Covers Easy/Medium problems across arrays, strings, hashmaps, trees, graphs, DP
-* Filter to Easy and Medium only; skip Hard problems (too noisy for structured reasoning)
+* Uses problem description + Python completion + entry point + input/output examples.
+* Filter to Easy/Medium only.
+* Current Phase 2 pipeline is LeetCode-only to maximize data consistency and execution reliability.
 
-**2. CodeSearchNet (Python subset)**
+### Optional Future Expansion
 
-* HuggingFace dataset: `code_search_net`, language=Python
-* Use the `func_documentation_string` as the problem description and `func_code_string` as the solution
-* Filter to algorithmic functions only (sort, search, traverse, etc.) using keyword matching
-
-**3. GeeksForGeeks / InterviewBit scraped summaries (manual curation)**
-
-* For 50–100 classic DSA problems (Two Sum, Fibonacci, Binary Search, BFS/DFS, etc.), manually write structured examples or use GPT-4 API to generate structured outputs
-* These serve as seed/anchor examples for quality calibration
+* Additional sources can be reintroduced later if needed, but are not part of the current pipeline.
 
 ### Supplementary
 
@@ -172,15 +165,17 @@ Every record must follow this exact format:
 }
 ```
 
-Every record must also have an associated test case file:
+Every record must also have an associated executable test case file:
 
 ```json
 {
-  "problem_id": "two_sum_001",
+    "problem_id": "two_sum_001",
+    "entry_point": "Solution().twoSum",
+    "prompt": "...optional helpers...",
   "test_cases": [
-    {"input": "nums=[2,7,11,15], target=9", "expected_output": "[0, 1]"},
-    {"input": "nums=[3,2,4], target=6", "expected_output": "[1, 2]"},
-    {"input": "nums=[3,3], target=6", "expected_output": "[0, 1]"}
+        {"args": [], "kwargs": {"nums": [2,7,11,15], "target": 9}, "expected_output": [0, 1]},
+        {"args": [], "kwargs": {"nums": [3,2,4], "target": 6}, "expected_output": [1, 2]},
+        {"args": [], "kwargs": {"nums": [3,3], "target": 6}, "expected_output": [0, 1]}
   ]
 }
 ```
@@ -193,7 +188,8 @@ Every record must also have an associated test case file:
 2. Normalize formatting: consistent section headers (`Approach:`, `Reasoning:`, `Code:`).
 3. Validate Python code: run all solutions through `py_compile` to catch syntax errors before training.
 4. Filter out problems with no valid test cases.
-5. Ensure consistent structure across all records.
+5. Run execution validation against per-problem test cases before split.
+6. Ensure consistent structure across all records.
 
 ---
 

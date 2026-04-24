@@ -1,0 +1,29 @@
+{
+  "problem_id": "leetcode-longest-absolute-file-path-00318",
+  "entry_point": "Solution().lengthLongestPath",
+  "prompt": "import collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "input": "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext"
+      },
+      "expected_output": 20
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "input": "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
+      },
+      "expected_output": 32
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "input": "a"
+      },
+      "expected_output": 0
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}

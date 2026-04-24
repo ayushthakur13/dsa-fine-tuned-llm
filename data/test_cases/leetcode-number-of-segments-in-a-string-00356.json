@@ -1,0 +1,29 @@
+{
+  "problem_id": "leetcode-number-of-segments-in-a-string-00356",
+  "entry_point": "Solution().countSegments",
+  "prompt": "import collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "s": "Hello, my name is John"
+      },
+      "expected_output": 5
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "Hello"
+      },
+      "expected_output": 1
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "Punctuation,should,not:be;problematic"
+      },
+      "expected_output": 1
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}

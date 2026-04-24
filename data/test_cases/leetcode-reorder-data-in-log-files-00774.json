@@ -1,0 +1,93 @@
+{
+  "problem_id": "leetcode-reorder-data-in-log-files-00774",
+  "entry_point": "Solution().reorderLogFiles",
+  "prompt": "import random\nimport functools\nimport collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')\n\nclass ListNode:\n    def __init__(self, val=0, next=None):\n        self.val = val\n        self.next = next\n\ndef list_node(values: list):\n    if not values:\n        return None\n    head = ListNode(values[0])\n    p = head\n    for val in values[1:]:\n        node = ListNode(val)\n        p.next = node\n        p = node\n    return head\n\ndef is_same_list(p1, p2):\n    if p1 is None and p2 is None:\n        return True\n    if not p1 or not p2:\n        return False\n    return p1.val == p2.val and is_same_list(p1.next, p2.next)\n\nclass TreeNode:\n    def __init__(self, val=0, left=None, right=None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef tree_node(values: list):\n    if not values:\n        return None\n    root = TreeNode(values[0])\n    i = 1\n    queue = deque()\n    queue.append(root)\n    while queue:\n        node = queue.popleft()\n        if i < len(values) and values[i] is not None:\n            node.left = TreeNode(values[i])\n            queue.append(node.left)\n        i += 1\n        if i < len(values) and values[i] is not None:\n            node.right = TreeNode(values[i])\n            queue.append(node.right)\n        i += 1\n    return root\n\ndef is_same_tree(p, q):\n    if not p and not q:\n        return True\n    elif not p or not q:\n        return False\n    elif p.val != q.val:\n        return False\n    else:\n        return is_same_tree(p.left, q.left) and is_same_tree(p.right, q.right)",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "logs": [
+          "dig1 8 1 5 1",
+          "let1 art can",
+          "dig2 3 6",
+          "let2 own kit dig",
+          "let3 art zero"
+        ]
+      },
+      "expected_output": [
+        "let1 art can",
+        "let3 art zero",
+        "let2 own kit dig",
+        "dig1 8 1 5 1",
+        "dig2 3 6"
+      ]
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "logs": [
+          "a1 9 2 3 1",
+          "g1 act car",
+          "zo4 4 7",
+          "ab1 off key dog",
+          "a8 act zoo"
+        ]
+      },
+      "expected_output": [
+        "g1 act car",
+        "a8 act zoo",
+        "ab1 off key dog",
+        "a1 9 2 3 1",
+        "zo4 4 7"
+      ]
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "logs": [
+          "x1 2 3",
+          "y1 2 4",
+          "z1 2 5",
+          "a1 act car",
+          "b1 act zoo",
+          "c1 off key dog",
+          "d1 art can",
+          "e1 8 1 5 1",
+          "f1 own kit dig",
+          "g1 art zero",
+          "h1 3 6",
+          "i1 act car",
+          "j1 act zoo",
+          "k1 off key dog",
+          "l1 art can",
+          "m1 8 1 5 1",
+          "n1 own kit dig",
+          "o1 art zero",
+          "p1 3 6"
+        ]
+      },
+      "expected_output": [
+        "a1 act car",
+        "i1 act car",
+        "b1 act zoo",
+        "j1 act zoo",
+        "d1 art can",
+        "l1 art can",
+        "g1 art zero",
+        "o1 art zero",
+        "c1 off key dog",
+        "k1 off key dog",
+        "f1 own kit dig",
+        "n1 own kit dig",
+        "x1 2 3",
+        "y1 2 4",
+        "z1 2 5",
+        "e1 8 1 5 1",
+        "h1 3 6",
+        "m1 8 1 5 1",
+        "p1 3 6"
+      ]
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}

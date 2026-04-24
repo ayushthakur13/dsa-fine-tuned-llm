@@ -1,0 +1,29 @@
+{
+  "problem_id": "leetcode-reverse-vowels-of-a-string-00291",
+  "entry_point": "Solution().reverseVowels",
+  "prompt": "import collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "s": "hello"
+      },
+      "expected_output": "holle"
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "leetcode"
+      },
+      "expected_output": "leotcede"
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "HELLO world"
+      },
+      "expected_output": null
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}

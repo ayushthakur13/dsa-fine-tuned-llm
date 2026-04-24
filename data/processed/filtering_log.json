@@ -1,0 +1,19 @@
+{
+  "total_ingested": 800,
+  "manual_seed_source_used": false,
+  "missing_headers": 0,
+  "bad_syntax": 0,
+  "empty_input": 0,
+  "duplicates_removed": 43,
+  "missing_testcase_file": 0,
+  "invalid_testcase_schema": 0,
+  "execution_passed": 590,
+  "execution_failed": 167,
+  "execution_timeout": 0,
+  "execution_runtime_error": 90,
+  "execution_logic_error": 77,
+  "valid_final_count": 590,
+  "split_train": 413,
+  "split_val": 88,
+  "split_test": 89
+}

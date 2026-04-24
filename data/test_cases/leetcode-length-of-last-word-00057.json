@@ -1,0 +1,29 @@
+{
+  "problem_id": "leetcode-length-of-last-word-00057",
+  "entry_point": "Solution().lengthOfLastWord",
+  "prompt": "import collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "s": "Hello World"
+      },
+      "expected_output": 5
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "   fly me   to   the moon  "
+      },
+      "expected_output": 4
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "luffy is still joyboy"
+      },
+      "expected_output": 6
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}

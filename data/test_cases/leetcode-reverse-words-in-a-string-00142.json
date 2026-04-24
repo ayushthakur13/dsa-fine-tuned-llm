@@ -1,0 +1,29 @@
+{
+  "problem_id": "leetcode-reverse-words-in-a-string-00142",
+  "entry_point": "Solution().reverseWords",
+  "prompt": "import collections\nimport string\nimport math\nimport datetime\n\nfrom typing import *\nfrom functools import *\nfrom collections import *\nfrom itertools import *\nfrom heapq import *\nfrom bisect import *\nfrom string import *\nfrom operator import *\nfrom math import *\n\ninf = float('inf')",
+  "test_cases": [
+    {
+      "args": [],
+      "kwargs": {
+        "s": "the sky is blue"
+      },
+      "expected_output": "blue is sky the"
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "  hello world  "
+      },
+      "expected_output": "world hello"
+    },
+    {
+      "args": [],
+      "kwargs": {
+        "s": "a good   example"
+      },
+      "expected_output": "example good a"
+    }
+  ],
+  "test_cases_source": "leetcode_dataset"
+}
