@@ -268,6 +268,16 @@ The prompt-engineered baseline uses Chain-of-Thought (CoT) prompting with this t
 
 ## Structured Output Parsing
 
+The implemented Phase 3 entrypoint is [evaluation/validate_pipeline.py](evaluation/validate_pipeline.py). Run it from the repository root after activating the virtual environment:
+
+```bash
+python3 evaluation/validate_pipeline.py
+```
+
+It validates the evaluator on one real test-set problem and checks five failure modes: correct solution, wrong solution, missing `Code:` section, syntax error, and timeout.
+
+See [docs/phase-3.md](docs/phase-3.md) for the full phase 3 run guide.
+
 Before execution, extract the `Code:` section from the model output using a simple regex or string split on the `Code:` header. If the section is missing, classify as a formatting failure and mark as fail.
 
 ---
@@ -335,6 +345,10 @@ def run_solution(code: str, test_input: str, expected: str, timeout: int = 5) ->
 Pass@1 = (Number of problems where first attempt passed all test cases) / (Total problems in test set)
 
 Computed separately for each model variant to produce the comparison table.
+
+## Phase 3 Self-Test
+
+Before evaluating any model outputs, run the self-test in [evaluation/validate_pipeline.py](evaluation/validate_pipeline.py) to confirm that parsing, execution, error classification, and timeout handling are working end to end.
 
 ---
 
