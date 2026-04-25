@@ -1,0 +1,11 @@
+{
+  "pass_at_1": 0.0,
+  "total_problems": 89,
+  "passed": 0,
+  "failed": 89,
+  "error_breakdown": {
+    "formatting_failure": 89
+  },
+  "bleu": 0.0772,
+  "rouge_l": 0.2231
+}
