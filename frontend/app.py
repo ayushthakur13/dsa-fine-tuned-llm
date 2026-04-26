@@ -1,6 +1,6 @@
 """Phase 7 — Gradio frontend.
 
-Connects to FastAPI backend at localhost:8000.
+Connects to the FastAPI backend via a configurable API URL.
 Provides:
 - Single model generation with approach/reasoning/code tabs
 - Side-by-side model comparison
@@ -19,20 +19,27 @@ from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
-API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
+DEFAULT_API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
 GENERATE_TIMEOUT_SECONDS = 3600
 COMPARE_TIMEOUT_SECONDS = 3600
 
 NGROK_HEADERS = {"ngrok-skip-browser-warning": "true"}
 
+
+def normalize_api_url(api_url: str | None) -> str:
+    if not api_url:
+        return DEFAULT_API_URL
+    return api_url.strip().rstrip("/")
+
 # ---------------------------------------------------------------------------
 # API helpers
 # ---------------------------------------------------------------------------
 
-def call_generate(problem: str, model_variant: str) -> dict:
+def call_generate(api_url: str, problem: str, model_variant: str) -> dict:
     try:
+        api_url = normalize_api_url(api_url)
         resp = requests.post(
-            f"{API_URL}/generate",
+            f"{api_url}/generate",
             json={"problem": problem, "model_variant": model_variant},
             timeout=GENERATE_TIMEOUT_SECONDS,
             headers=NGROK_HEADERS,
@@ -49,10 +56,11 @@ def call_generate(problem: str, model_variant: str) -> dict:
         return {"error": str(e)}
 
 
-def call_compare(problem: str) -> dict:
+def call_compare(api_url: str, problem: str) -> dict:
     try:
+        api_url = normalize_api_url(api_url)
         resp = requests.post(
-            f"{API_URL}/compare",
+            f"{api_url}/compare",
             json={"problem": problem},
             timeout=COMPARE_TIMEOUT_SECONDS,
             headers=NGROK_HEADERS,
@@ -76,15 +84,30 @@ def load_metrics() -> dict:
     return {}
 
 
+def check_backend(api_url: str) -> str:
+    api_url = normalize_api_url(api_url)
+    try:
+        resp = requests.get(
+            f"{api_url}/health",
+            timeout=10,
+            headers=NGROK_HEADERS,
+        )
+        if not resp.ok:
+            return f"Backend {resp.status_code}: {resp.text[:300]}"
+        return json.dumps(resp.json(), indent=2)
+    except Exception as e:
+        return f"Error: {e}"
+
+
 # ---------------------------------------------------------------------------
 # Tab 1 — Single model generation
 # ---------------------------------------------------------------------------
 
-def generate_single(problem: str, model_variant: str):
+def generate_single(api_url: str, problem: str, model_variant: str):
     if not problem.strip():
         return "Please enter a problem.", "", "", ""
 
-    result = call_generate(problem, model_variant)
+    result = call_generate(api_url, problem, model_variant)
 
     if "error" in result:
         return f"Error: {result['error']}", "", "", ""
@@ -102,12 +125,12 @@ def generate_single(problem: str, model_variant: str):
 # Tab 2 — Side-by-side comparison
 # ---------------------------------------------------------------------------
 
-def generate_compare(problem: str):
+def generate_compare(api_url: str, problem: str):
     if not problem.strip():
         empty = "Please enter a problem."
         return empty, empty, empty, empty, empty, empty
 
-    result = call_compare(problem)
+    result = call_compare(api_url, problem)
 
     if "error" in result:
         err = f"Error: {result['error']}"
@@ -166,7 +189,21 @@ def get_metrics_table():
 
 with gr.Blocks(title="DSA Solver — Fine-Tuned LLM") as demo:
     gr.Markdown("# DSA Solver — Fine-Tuned LLM\nCSE3720 · Generative AI and LLMs · End-Term Project")
-    gr.Markdown(f"Backend API: {API_URL}")
+    gr.Markdown("Backend API is configurable below. Point it at your ngrok URL for remote inference.")
+
+    api_url_input = gr.Textbox(
+        label="Backend API URL",
+        value=DEFAULT_API_URL,
+        placeholder="http://localhost:8000 or https://your-ngrok-url.ngrok-free.dev",
+    )
+    backend_status = gr.Textbox(label="Backend Health", interactive=False)
+    check_backend_btn = gr.Button("Check Backend", variant="secondary")
+
+    check_backend_btn.click(
+        fn=check_backend,
+        inputs=[api_url_input],
+        outputs=[backend_status],
+    )
 
     with gr.Tab("Generate"):
         gr.Markdown("### Single Model Generation")
@@ -193,7 +230,7 @@ with gr.Blocks(title="DSA Solver — Fine-Tuned LLM") as demo:
 
         generate_btn.click(
             fn=generate_single,
-            inputs=[problem_input, model_selector],
+            inputs=[api_url_input, problem_input, model_selector],
             outputs=[info_output, approach_output, reasoning_output, code_output],
         )
 
@@ -222,7 +259,7 @@ with gr.Blocks(title="DSA Solver — Fine-Tuned LLM") as demo:
 
         compare_btn.click(
             fn=generate_compare,
-            inputs=[compare_input],
+            inputs=[api_url_input, compare_input],
             outputs=[base_out, base_code, prompt_out, prompt_code, ft_out, ft_code],
         )
 
@@ -246,10 +283,11 @@ with gr.Blocks(title="DSA Solver — Fine-Tuned LLM") as demo:
         refresh_btn = gr.Button("Refresh Logs")
         logs_output = gr.JSON(label="Logs")
 
-        def fetch_logs():
+        def fetch_logs(api_url: str):
             try:
+                api_url = normalize_api_url(api_url)
                 resp = requests.get(
-                    f"{API_URL}/logs",
+                    f"{api_url}/logs",
                     timeout=10,
                     headers=NGROK_HEADERS,
                 )
@@ -257,8 +295,8 @@ with gr.Blocks(title="DSA Solver — Fine-Tuned LLM") as demo:
             except Exception as e:
                 return {"error": str(e)}
 
-        refresh_btn.click(fn=fetch_logs, outputs=[logs_output])
+        refresh_btn.click(fn=fetch_logs, inputs=[api_url_input], outputs=[logs_output])
 
 
 if __name__ == "__main__":
-    demo.launch(share=True)
+    demo.launch()
