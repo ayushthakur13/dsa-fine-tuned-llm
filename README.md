@@ -35,6 +35,18 @@ This is:
 
 ---
 
+# Project Status (Current)
+
+* Phase 2 complete: LeetCode-only dataset finalized and split for training/evaluation.
+* Phase 3 complete: evaluator validated via `evaluation/validate_pipeline.py`.
+* Phase 4 complete: baseline and prompt-engineered runs implemented in `evaluation/phase4_baseline.py` and `evaluation/phase4_prompt.py`.
+* Phase 5 complete: QLoRA dry run and full fine-tuning flow validated in `training/train.py`; adapter checkpoint exported and pushed to Hugging Face.
+* Next active step: Phase 6 full evaluation of the fine-tuned adapter.
+
+See `docs/phase-3.md` and `docs/phase-6.md` for run guides.
+
+---
+
 # 2. 🧩 Problem Statement
 
 Large Language Models often generate incorrect, incomplete, or logically flawed solutions for structured DSA problems. Prompt engineering alone does not guarantee correctness or consistency.
@@ -349,6 +361,8 @@ Computed separately for each model variant to produce the comparison table.
 ## Phase 3 Self-Test
 
 Before evaluating any model outputs, run the self-test in [evaluation/validate_pipeline.py](evaluation/validate_pipeline.py) to confirm that parsing, execution, error classification, and timeout handling are working end to end.
+
+After self-test and baseline runs, evaluate the fine-tuned adapter in Phase 6. See `docs/phase-6.md`.
 
 ---
 
