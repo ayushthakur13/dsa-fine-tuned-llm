@@ -1,0 +1,84 @@
+{
+  "comparison_table": [
+    {
+      "model": "Base",
+      "pass_at_1": 0.0,
+      "bleu": 0.0772,
+      "rouge_l": 0.2231,
+      "passed": 0,
+      "total_problems": 89,
+      "error_breakdown": {
+        "formatting_failure": 89
+      }
+    },
+    {
+      "model": "Prompt-Engineered",
+      "pass_at_1": 0.0562,
+      "bleu": 0.0896,
+      "rouge_l": 0.2938,
+      "passed": 5,
+      "total_problems": 89,
+      "error_breakdown": {
+        "syntax_error": 25,
+        "runtime_error": 46,
+        "logic_error": 10,
+        "timeout": 3
+      }
+    },
+    {
+      "model": "Fine-Tuned",
+      "pass_at_1": 0.0674,
+      "bleu": 0.0984,
+      "rouge_l": 0.2956,
+      "passed": 6,
+      "total_problems": 89,
+      "error_breakdown": {
+        "runtime_error": 47,
+        "logic_error": 28,
+        "syntax_error": 6,
+        "formatting_failure": 2
+      }
+    }
+  ],
+  "raw": {
+    "base": {
+      "pass_at_1": 0.0,
+      "total_problems": 89,
+      "passed": 0,
+      "failed": 89,
+      "error_breakdown": {
+        "formatting_failure": 89
+      },
+      "bleu": 0.0772,
+      "rouge_l": 0.2231
+    },
+    "prompt_engineered": {
+      "pass_at_1": 0.0562,
+      "total_problems": 89,
+      "passed": 5,
+      "failed": 84,
+      "error_breakdown": {
+        "syntax_error": 25,
+        "runtime_error": 46,
+        "logic_error": 10,
+        "timeout": 3
+      },
+      "bleu": 0.0896,
+      "rouge_l": 0.2938
+    },
+    "finetuned": {
+      "pass_at_1": 0.0674,
+      "total_problems": 89,
+      "passed": 6,
+      "failed": 83,
+      "error_breakdown": {
+        "runtime_error": 47,
+        "logic_error": 28,
+        "syntax_error": 6,
+        "formatting_failure": 2
+      },
+      "bleu": 0.0984,
+      "rouge_l": 0.2956
+    }
+  }
+}

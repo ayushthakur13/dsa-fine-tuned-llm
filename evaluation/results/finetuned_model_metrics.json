@@ -1,0 +1,14 @@
+{
+  "pass_at_1": 0.0674,
+  "total_problems": 89,
+  "passed": 6,
+  "failed": 83,
+  "error_breakdown": {
+    "runtime_error": 47,
+    "logic_error": 28,
+    "syntax_error": 6,
+    "formatting_failure": 2
+  },
+  "bleu": 0.0984,
+  "rouge_l": 0.2956
+}
