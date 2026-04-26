@@ -15,12 +15,15 @@ from pathlib import Path
 
 import gradio as gr
 import requests
+from dotenv import load_dotenv
 
-API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
 ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT / ".env")
+API_URL = os.getenv("API_URL", "http://localhost:8000").rstrip("/")
 GENERATE_TIMEOUT_SECONDS = 3600
 COMPARE_TIMEOUT_SECONDS = 3600
 
+NGROK_HEADERS = {"ngrok-skip-browser-warning": "true"}
 
 # ---------------------------------------------------------------------------
 # API helpers
@@ -32,6 +35,7 @@ def call_generate(problem: str, model_variant: str) -> dict:
             f"{API_URL}/generate",
             json={"problem": problem, "model_variant": model_variant},
             timeout=GENERATE_TIMEOUT_SECONDS,
+            headers=NGROK_HEADERS,
         )
         if not resp.ok:
             return {"error": f"Backend {resp.status_code}: {resp.text[:500]}"}
@@ -40,12 +44,7 @@ def call_generate(problem: str, model_variant: str) -> dict:
         except ValueError:
             return {"error": f"Backend returned non-JSON response: {resp.text[:500]}"}
     except requests.exceptions.ReadTimeout:
-        return {
-            "error": (
-                "Backend timed out while loading model weights. "
-                "Run POST /warmup once and retry."
-            )
-        }
+        return {"error": "Backend timed out."}
     except Exception as e:
         return {"error": str(e)}
 
@@ -56,6 +55,7 @@ def call_compare(problem: str) -> dict:
             f"{API_URL}/compare",
             json={"problem": problem},
             timeout=COMPARE_TIMEOUT_SECONDS,
+            headers=NGROK_HEADERS,
         )
         if not resp.ok:
             return {"error": f"Backend {resp.status_code}: {resp.text[:500]}"}
@@ -64,12 +64,7 @@ def call_compare(problem: str) -> dict:
         except ValueError:
             return {"error": f"Backend returned non-JSON response: {resp.text[:500]}"}
     except requests.exceptions.ReadTimeout:
-        return {
-            "error": (
-                "Backend timed out while loading model weights. "
-                "Run POST /warmup once and retry."
-            )
-        }
+        return {"error": "Backend timed out."}
     except Exception as e:
         return {"error": str(e)}
 
@@ -253,7 +248,11 @@ with gr.Blocks(title="DSA Solver — Fine-Tuned LLM") as demo:
 
         def fetch_logs():
             try:
-                resp = requests.get(f"{API_URL}/logs", timeout=10)
+                resp = requests.get(
+                    f"{API_URL}/logs",
+                    timeout=10,
+                    headers=NGROK_HEADERS,
+                )
                 return resp.json()
             except Exception as e:
                 return {"error": str(e)}
